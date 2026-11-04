@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TradeWiser | Trading Journal</title>
+    <meta name="description" content="TradeWiser helps traders log trades, review decisions, and spot patterns over time." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-row">
+          <div class="brand-mark">T</div>
+          <div>
+            <p class="eyebrow">Trading journal</p>
+            <h1>TradeWiser</h1>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item active" data-view="dashboard">Dashboard</button>
+          <button class="nav-item" data-view="journal">Trade journal</button>
+          <button class="nav-item" data-view="trends">Trend analysis</button>
+          <button class="nav-item" data-view="tools">Risk tools</button>
+        </nav>
+
+        <div class="side-card">
+          <p class="card-label">Focus</p>
+          <h3>Review process, not just outcomes</h3>
+          <p>
+            Log the setup, execution, and lessons to learn what actually drove the result.
+          </p>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Overview</p>
+            <h2>Performance dashboard</h2>
+          </div>
+          <button id="seedDataBtn" class="secondary-btn">Load sample data</button>
+        </header>
+
+        <section id="dashboard" class="panel active-panel">
+          <div class="stats-grid">
+            <article class="stat-card primary">
+              <span class="stat-label">Total P&L</span>
+              <strong id="totalPnl">$0.00</strong>
+              <small id="totalReturn">0.00% return</small>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Win rate</span>
+              <strong id="winRate">0%</strong>
+              <small id="bestStrategy">Best strategy: —</small>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Avg. R</span>
+              <strong id="avgR">0.00R</strong>
+              <small id="tradeCount">0 trades</small>
+            </article>
+            <article class="stat-card">
+              <span class="stat-label">Capital used</span>
+              <strong id="capitalUsed">$0.00</strong>
+              <small id="largestLoss">Largest loss: $0.00</small>
+            </article>
+          </div>
+
+          <div class="content-grid two-col">
+            <article class="panel-card chart-card">
+              <div class="card-head">
+                <h3>Equity curve</h3>
+              </div>
+              <div id="equityChart" class="equity-chart" aria-label="Equity curve"></div>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <h3>Performance by strategy</h3>
+              </div>
+              <div id="strategyBreakdown" class="bars-list"></div>
+            </article>
+          </div>
+
+          <div class="content-grid two-col">
+            <article class="panel-card">
+              <div class="card-head">
+                <h3>Top symbols</h3>
+              </div>
+              <div id="symbolBreakdown" class="bars-list compact"></div>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <h3>Review insights</h3>
+              </div>
+              <ul id="insightList" class="insight-list"></ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="journal" class="panel">
+          <div class="journal-grid">
+            <article class="panel-card form-card">
+              <div class="card-head">
+                <h3>Log a new trade</h3>
+              </div>
+
+              <form id="tradeForm">
+                <div class="form-grid">
+                  <label>
+                    Symbol
+                    <input type="text" name="symbol" placeholder="AAPL" required />
+                  </label>
+
+                  <label>
+                    Side
+                    <select name="side" required>
+                      <option value="Long">Long</option>
+                      <option value="Short">Short</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Strategy
+                    <input type="text" name="strategy" placeholder="Breakout" />
+                  </label>
+
+                  <label>
+                    Setup type
+                    <input type="text" name="setupType" placeholder="Trend continuation" />
+                  </label>
+
+                  <label>
+                    Entry date
+                    <input type="date" name="entryDate" required />
+                  </label>
+
+                  <label>
+                    Exit date
+                    <input type="date" name="exitDate" required />
+                  </label>
+
+                  <label>
+                    Entry price
+                    <input type="number" name="entryPrice" step="0.01" min="0" required />
+                  </label>
+
+                  <label>
+                    Exit price
+                    <input type="number" name="exitPrice" step="0.01" min="0" required />
+                  </label>
+
+                  <label>
+                    Quantity
+                    <input type="number" name="quantity" step="1" min="1" required />
+                  </label>
+
+                  <label>
+                    Capital used
+                    <input type="number" name="capitalUsed" step="0.01" min="0" required />
+                  </label>
+
+                  <label>
+                    Fees
+                    <input type="number" name="fees" step="0.01" min="0" value="0" />
+                  </label>
+
+                  <label>
+                    Stop loss
+                    <input type="number" name="stopLoss" step="0.01" min="0" />
+                  </label>
+
+                  <label>
+                    Take profit
+                    <input type="number" name="takeProfit" step="0.01" min="0" />
+                  </label>
+
+                  <label class="full-span">
+                    Trade notes
+                    <textarea name="notes" rows="3" placeholder="Why did you take this trade? What was the thesis?"></textarea>
+                  </label>
+
+                  <label class="full-span">
+                    Review / lessons
+                    <textarea name="review" rows="3" placeholder="What worked, what failed, and what would you change next time?"></textarea>
+                  </label>
+
+                  <label>
+                    Confidence (1-10)
+                    <input type="number" min="1" max="10" name="confidence" value="6" />
+                  </label>
+
+                  <label>
+                    Execution quality (1-10)
+                    <input type="number" min="1" max="10" name="executionQuality" value="6" />
+                  </label>
+
+                  <label>
+                    Followed plan?
+                    <select name="followedPlan">
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Tags
+                    <input type="text" name="tags" placeholder="e.g. trend, news, revenge, breakout" />
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="primary-btn">Save trade</button>
+                  <button type="reset" class="secondary-btn">Reset</button>
+                </div>
+              </form>
+            </article>
+
+            <article class="panel-card list-card">
+              <div class="card-head with-filters">
+                <h3>Recent trades</h3>
+                <div class="filters">
+                  <input id="symbolFilter" type="text" placeholder="Filter symbol" />
+                  <select id="strategyFilter">
+                    <option value="All">All strategies</option>
+                  </select>
+                </div>
+              </div>
+              <div id="tradeList" class="trade-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="trends" class="panel">
+          <div class="content-grid two-col">
+            <article class="panel-card">
+              <div class="card-head">
+                <h3>Trade quality overview</h3>
+              </div>
+              <div id="qualityOverview" class="quality-grid"></div>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <h3>Failure vs success patterns</h3>
+              </div>
+              <div id="patternSummary" class="pattern-summary"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="tools" class="panel">
+          <div class="content-grid two-col">
+            <article class="panel-card">
+              <div class="card-head">
+                <h3>Risk calculator</h3>
+              </div>
+              <div class="tool-form">
+                <label>
+                  Account size
+                  <input id="accountSize" type="number" step="100" value="10000" />
+                </label>
+                <label>
+                  Risk per trade (%)
+                  <input id="riskPercent" type="number" step="0.1" value="1" />
+                </label>
+                <label>
+                  Stop loss distance (%)
+                  <input id="stopDistance" type="number" step="0.1" value="2" />
+                </label>
+                <button id="calculateRiskBtn" class="primary-btn">Calculate</button>
+              </div>
+              <div id="riskResult" class="tool-result"></div>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <h3>Trade review checklist</h3>
+              </div>
+              <ul class="checklist">
+                <li>Was my setup valid?</li>
+                <li>Did I respect my risk plan?</li>
+                <li>Did I trade the plan instead of the emotion?</li>
+                <li>What was the biggest mistake or advantage?</li>
+                <li>What would I do differently next time?</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
